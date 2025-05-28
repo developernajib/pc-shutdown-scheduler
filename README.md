@@ -1,94 +1,275 @@
 # 🕙 Automatic PC Shutdown Scheduler
 
-A Python-based utility that automatically shuts down your PC at a scheduled time, with configurable notifications and smart features to ensure shutdown policies are enforced.
+A Python-based utility that automatically shuts down your PC at a scheduled time, with configurable notifications, smart features, and weekend exemptions to ensure shutdown policies are enforced while respecting work-life balance.
 
-### 📋 Available Versions
+## 📋 Available Versions
 
-This repository contains two versions of the shutdown scheduler:
+This repository contains multiple versions of the shutdown scheduler:
 
-- **Normal Version**: Simple, clean implementation with minimal logging and straightforward notifications
-- **Extended Version**: More advanced features including restart evasion detection and admin overrides
+-   **🌟 Enhanced Normal Version**: Clean implementation with Friday exemption and reliable shutdown
+-   **🔥 Enhanced Extended Version**: Advanced features including restart evasion detection, admin overrides, and Friday exemption
+-   **📄 Batch Version**: Native Windows batch script version with all enhanced features
 
-### 🚀 Normal Version
+---
 
-The Normal Version provides a simple, reliable automatic shutdown solution that runs silently in the background until notification times.
+## 🌟 Enhanced Normal Version
 
-#### ✨ Features
+The Enhanced Normal Version provides a simple, reliable automatic shutdown solution with weekend respect and bulletproof shutdown execution.
 
-| Feature | Description |
-|---------|-------------|
-| **⏱️ Precise Timed Shutdown** | <ul><li>Automatically shuts down the PC at exactly 11:00 PM</li><li>No delay between scheduled time and actual shutdown execution</li></ul> |
-| **🔔 Two-Phase Notifications** | <ul><li>First dialog shown precisely from 9:30 PM to 10:50 PM</li><li>Second dialog shown precisely from 10:50 PM until 11:00 PM shutdown</li></ul> |
-| **⏳ Time-Based Dialog Transition** | <ul><li>First dialog automatically closes at exactly 10:50 PM</li><li>Second dialog appears immediately at 10:50 PM</li></ul> |
-| **⚠️ 10-Minute Final Warning** | <ul><li>Clear 10-minute warning before shutdown (10:50 PM to 11:00 PM)</li><li>Persistent warning remains visible for the entire 10-minute period</li></ul> |
-| **⏰ Pre-Configured Timing** | <ul><li>Shutdown time: 11:00 PM (23:00)</li><li>First notification: 9:30 PM (21:30)</li><li>Final warning: 10:50 PM (22:50)</li></ul> |
-| **❌ Simple Cancellation** | <ul><li>Shutdown can be canceled at any point between 9:30 PM and 11:00 PM</li><li>Single-click cancellation through dialog interface</li></ul> |
-| **🔲 Background Operation** | <ul><li>Runs invisibly until scheduled notification times</li><li>Only becomes visible at 9:30 PM when first dialog appears</li></ul> |
-| **💻 Cross-Platform** | <ul><li>Works on Windows, macOS, and Linux</li><li>Instant shutdown execution at 11:00 PM on all platforms</li></ul> |
-| **📝 Minimal Logging** | <ul><li>Logs script startup time</li><li>Logs the exact time when shutdown is initiated at 11:00 PM</li></ul> |
-| **🔄 Startup Integration** | <ul><li>Designed to run silently from system startup until 9:30 PM</li><li>Low resource usage during waiting periods</li></ul> |
-| **🖥️ Hidden Console** | <ul><li>No visible console window at any time</li><li>Clean user experience with dialogs appearing only at scheduled times</li></ul> |
-| **⚕️ Error Handling** | <ul><li>Ensures reliable 11:00 PM shutdown even if errors occur</li><li>Maintains timing accuracy in all scenarios</li></ul> |
+### ✨ Key Features
 
-### 🔥 Extended Version
+| Feature                         | Description                                                                                                                                                                                                                                 |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **🎉 Friday Weekend Exemption** | <ul><li>**No shutdown on Fridays** - script automatically exits</li><li>**Dynamic Friday detection** - monitors day changes during execution</li><li>**Weekend message display** - shows friendly "Enjoy your weekend!" message</li></ul>   |
+| **⏱️ Bulletproof Shutdown**     | <ul><li>**Multiple shutdown methods** with fallbacks for Windows 10 Pro</li><li>**Administrator privilege requests** for reliable shutdown execution</li><li>**Absolute shutdown timer** that executes regardless of dialog state</li></ul> |
+| **🔔 Enhanced Notifications**   | <ul><li>**Clear dialog messaging** - "YES - Cancel Shutdown" vs "NO - Let PC Shutdown"</li><li>**Modern dialog styling** with better visual hierarchy</li><li>**Always-on-top dialogs** ensuring visibility</li></ul>                       |
+| **✅ Smart Cancellation**       | <ul><li>**Complete script termination** when user cancels</li><li>**Confirmation messages** when shutdown is canceled</li><li>**No accidental shutdowns** - user must actively choose to proceed</li></ul>                                  |
+| **⏰ Precise Timing**           | <ul><li>**Shutdown time**: 11:00 PM (Monday-Thursday only)</li><li>**First notification**: 9:30 PM</li><li>**Final warning**: 10:50 PM with 10-minute countdown</li></ul>                                                                   |
+| **🔲 Background Operation**     | <ul><li>**Hidden console window** with professional background operation</li><li>**Low resource usage** during waiting periods</li><li>**Comprehensive logging** for monitoring and troubleshooting</li></ul>                               |
+| **💻 Enhanced Compatibility**   | <ul><li>**Windows 10/11 Pro support** with admin privilege handling</li><li>**Cross-platform compatibility** (Windows, macOS, Linux)</li><li>**Reliable shutdown commands** for all supported platforms</li></ul>                           |
 
-The Extended Version includes advanced features for organizations that need to strictly enforce shutdown policies, including restart evasion detection and admin overrides.
+### 📅 Weekly Schedule Behavior
 
-#### ✨ Features
+| Day                 | Behavior                                | Result                                         |
+| ------------------- | --------------------------------------- | ---------------------------------------------- |
+| **Monday-Thursday** | Normal operation                        | Dialogs → 11 PM shutdown (unless canceled)     |
+| **Friday**          | Immediate exit                          | "🎉 It's Friday! No shutdown scheduled today." |
+| **Saturday-Sunday** | Script not designed for weekend running | -                                              |
 
-| Feature | Description |
-|---------|-------------|
-| **⏱️ Scheduled Shutdown** | <ul><li>Automatically shuts down the PC at 11:00 PM</li><li>Can be configured to use different shutdown times</li></ul> |
-| **🔔 Two-Step Confirmation** | <ul><li>First confirmation dialog at 9:30 PM</li><li>Final confirmation dialog at 10:50 PM (10 minutes before shutdown)</li></ul> |
-| **❌ User Cancellation Options** | <ul><li>Users can cancel the shutdown at either confirmation dialog</li><li>Clear "Yes/No" options with explanatory text</li></ul> |
-| **⏲️ Auto-Timeout on Dialogs** | <ul><li>Final confirmation dialog automatically closes after 60 seconds if no response</li><li>Default behavior proceeds with shutdown if user doesn't respond</li></ul> |
-| **🔒 Restart Evasion Detection** | <ul><li>Detects if PC was restarted around shutdown time to avoid shutdown</li><li>Shows special dialog with shorter timeout (30 seconds) for evasion attempts</li><li>Enforces more immediate shutdown (2-minute warning) for evasion attempts</li></ul> |
-| **🔑 Admin Override Capability** | <ul><li>Allows administrators to override shutdown with password verification</li><li>Can be customized with organization-specific authentication</li></ul> |
-| **🔲 Background Operation** | <ul><li>Runs invisibly in the background</li><li>Only shows dialog boxes when needed</li><li>No console window or visible UI during operation</li></ul> |
-| **💻 Cross-Platform Compatibility** | <ul><li>Works on Windows, macOS, and Linux</li><li>Uses platform-specific shutdown commands</li></ul> |
-| **📝 Detailed Logging** | <ul><li>Records all events in shutdown_scheduler.log</li><li>Logs errors to shutdown_error.log</li><li>Includes timestamps for tracking</li></ul> |
-| **⚕️ Graceful Error Handling** | <ul><li>Handles exceptions without crashing</li><li>Logs errors for troubleshooting</li></ul> |
-| **👁️ Always-on-Top Dialogs** | <ul><li>Ensures confirmation dialogs are visible to users</li><li>Centers dialogs on screen for visibility</li></ul> |
-| **🕙 Configurable Time Format** | <ul><li>Supports easy configuration using 12-hour time format</li></ul> |
+---
 
-### 🛠️ Installation
+## 🔥 Enhanced Extended Version
 
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/developernajib/pc-shutdown-scheduler.git
-   ```
+The Enhanced Extended Version includes all normal features plus advanced organizational enforcement capabilities with weekend respect.
 
-2. Add to Windows startup:
-   - Press `Win + R` to open the Run dialog
-   - Type `shell:startup` and press Enter to open the Startup folder
-   - Right-click in the folder and select "New > Shortcut"
-   - Browse to the location of your Python script (or use the full path)
-   - Example path: `C:\Python\pythonw.exe C:\path\to\shutdown_scheduler.py`
-   - Name the shortcut "PC Shutdown Scheduler" and click Finish
-   
-   For other operating systems:
-   - **macOS**: Add to System Preferences > Users & Groups > Login Items
-   - **Linux**: Add to startup applications through your desktop environment settings
+### ✨ Advanced Features
 
-### ⚙️ Configuration
+| Feature                                   | Description                                                                                                                                                                                                                                                                                                              |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **🎉 Friday Weekend Exemption**           | <ul><li>**Complete Friday exemption** across all features including restart evasion</li><li>**Smart weekend detection** that overrides all enforcement mechanisms</li><li>**Runtime Friday monitoring** with graceful script termination</li></ul>                                                                       |
+| **🔒 Advanced Restart Evasion Detection** | <ul><li>**Friday-aware evasion detection** - respects weekend even during evasion</li><li>**Emergency shutdown dialogs** with shorter timeouts (30 seconds)</li><li>**Immediate shutdown enforcement** (2-minute warning) for evasion attempts</li><li>**System policy violation alerts** with clear messaging</li></ul> |
+| **🔑 Enhanced Admin Override**            | <ul><li>**Password-protected admin override** (default: "admin123")</li><li>**Friday exemption for admin overrides** - no override needed on Friday</li><li>**Proper admin authentication flow** with access denied handling</li></ul>                                                                                   |
+| **⚡ Bulletproof Shutdown System**        | <ul><li>**Triple-fallback shutdown methods** for maximum reliability</li><li>**Administrator privilege auto-elevation** on Windows</li><li>**Enhanced Windows 10 Pro compatibility**</li><li>**Subprocess and system command fallbacks**</li></ul>                                                                       |
+| **🔔 Advanced Dialog System**             | <ul><li>**Auto-timeout dialogs** with user-friendly countdowns</li><li>**Enhanced visual styling** with color-coded buttons</li><li>**Friday-aware dialog logic** - no dialogs shown on Friday</li><li>**Proper dialog threading** to prevent blocking</li></ul>                                                         |
+| **📊 Comprehensive Monitoring**           | <ul><li>**Detailed event logging** with emoji-coded status messages</li><li>**Friday detection logging** with clear weekend messages</li><li>**Admin action tracking** with override attempt logs</li><li>**Error logging with fallback handling**</li></ul>                                                             |
+| **🛡️ Multi-Layer Protection**             | <ul><li>**Startup Friday check** - exits immediately if Friday</li><li>**Runtime Friday monitoring** - exits if day changes to Friday</li><li>**Pre-shutdown Friday verification** - final safety check</li><li>**Cancellation-aware timers** that respect user choice</li></ul>                                         |
 
-You can configure the shutdown and notification times by modifying these lines in the script:
+### 🔄 Advanced Behavior Matrix
 
-```python
-# Times in 12-hour format (converted to datetime.time objects)
-first_dialog_time = datetime.time(21, 30)    # 9:30 PM
-second_dialog_time = datetime.time(22, 50)   # 10:50 PM (10 minutes before shutdown)
-shutdown_time = datetime.time(23, 0)         # 11:00 PM
+| Scenario              | Monday-Thursday    | Friday               | Result                       |
+| --------------------- | ------------------ | -------------------- | ---------------------------- |
+| **Normal Operation**  | Dialogs → Shutdown | Script exits         | Respects weekend             |
+| **User Cancellation** | Shutdown canceled  | N/A (no dialogs)     | User choice respected        |
+| **Restart Evasion**   | Emergency shutdown | Script exits         | Friday overrides enforcement |
+| **Admin Override**    | Override possible  | N/A (no enforcement) | Balanced control             |
+
+---
+
+## 📄 Batch Version Features
+
+### 🚀 Native Windows Implementation
+
+| Feature                         | Description                                                                                                                                                                                   |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **🎉 Friday Weekend Exemption** | <ul><li>**Native Windows date detection** using wmic commands</li><li>**Immediate Friday exit** with weekend messages</li><li>**Runtime Friday monitoring** during script execution</li></ul> |
+| **💬 Beautiful HTA Dialogs**    | <ul><li>**Modern HTML-based dialogs** with CSS styling</li><li>**Live countdown timers** in final warning dialog</li><li>**Professional button styling** with clear action labels</li></ul>   |
+| **⚡ No Dependencies**          | <ul><li>**Pure Windows batch script** - no Python required</li><li>**Built-in HTA technology** for rich dialogs</li><li>**Native Windows shutdown commands**</li></ul>                        |
+| **🔧 Enhanced Reliability**     | <ul><li>**Multiple Friday safety checks** throughout execution</li><li>**Proper process cleanup** when user cancels</li><li>**Comprehensive temp file management**</li></ul>                  |
+
+---
+
+## 🛠️ Installation & Setup
+
+### 1. **Python Versions (Normal & Extended)**
+
+```bash
+# Clone the repository
+git clone https://github.com/developernajib/pc-shutdown-scheduler.git
+cd pc-shutdown-scheduler
+
+# Choose your version:
+# - shutdown_scheduler_normal.py (Enhanced Normal)
+# - shutdown_scheduler_extended.py (Enhanced Extended)
 ```
 
-### 📄 License
+### 2. **Windows Startup Integration**
+
+**Method 1: Startup Folder (Recommended)**
+
+```bash
+# Press Win + R, type: shell:startup
+# Create shortcut with target:
+C:\Python\pythonw.exe "C:\path\to\shutdown_scheduler.py"
+```
+
+**Method 2: Task Scheduler (Advanced)**
+
+-   Create task that runs at startup
+-   Set to run with highest privileges
+-   Use pythonw.exe to run silently
+
+### 3. **Batch Version**
+
+```bash
+# Save as shutdown_scheduler.bat
+# Add to startup folder or Task Scheduler
+# Run with administrator privileges for reliable shutdown
+```
+
+---
+
+## ⚙️ Configuration
+
+### 🕐 Time Settings
+
+```python
+# Modify these variables for custom timing:
+first_dialog_time = datetime.time(21, 30)    # 9:30 PM first warning
+second_dialog_time = datetime.time(22, 50)   # 10:50 PM final warning
+shutdown_time = datetime.time(23, 0)         # 11:00 PM shutdown
+```
+
+### 🔐 Admin Override (Extended Version Only)
+
+```python
+# Change the admin password in show_restart_evasion_dialog():
+if admin_check == "your_custom_password":  # Replace "admin123"
+    # Admin override accepted
+```
+
+### 🎯 Friday Exemption (All Versions)
+
+The Friday exemption is built-in and automatic:
+
+-   **Detects Friday using system weekday**
+-   **Cannot be disabled** (by design for work-life balance)
+-   **Overrides all other features** including restart evasion
+
+---
+
+## 📊 Logging & Monitoring
+
+### 📝 Log Files Created
+
+| File                     | Purpose        | Location         |
+| ------------------------ | -------------- | ---------------- |
+| `shutdown_scheduler.log` | Main event log | Script directory |
+| `shutdown_error.log`     | Error tracking | Script directory |
+
+### 🔍 Sample Log Entries
+
+```
+[2024-12-06 21:25:30]: 🚀 Shutdown Scheduler started with enhanced reliability
+[2024-12-06 21:25:30]: 📅 Today is Thursday - shutdown is scheduled
+[2024-12-06 21:30:15]: 📢 Displaying first shutdown warning dialog
+[2024-12-06 21:32:45]: ⏭️ User clicked NO - will proceed with scheduled shutdown
+[2024-12-06 22:50:10]: 📢 Displaying final shutdown warning dialog (10 minutes remaining)
+[2024-12-06 23:00:00]: 🔴 PC SHUTDOWN INITIATED at scheduled time (11:00 PM)
+```
+
+**Friday Log Example:**
+
+```
+[2024-12-08 18:45:12]: 🎉 TODAY IS FRIDAY - Shutdown scheduler disabled for the weekend!
+[2024-12-08 18:45:12]: 📅 The scheduler will resume automatically on Monday
+```
+
+---
+
+## 🔧 System Requirements
+
+### **Python Versions**
+
+-   **Python 3.6+** (recommended: 3.8+)
+-   **tkinter** (usually included with Python)
+-   **Windows**: Additional `win32gui` for hidden console (optional)
+
+### **Batch Version**
+
+-   **Windows 7/8/10/11** (any edition)
+-   **HTA support** (built into Windows)
+-   **Administrator privileges** (recommended)
+
+### **All Versions**
+
+-   **System clock accuracy** for precise timing
+-   **Startup permissions** for automatic launch
+
+---
+
+## 🛡️ Security & Best Practices
+
+### ✅ **Recommended Setup**
+
+1. **Run with administrator privileges** for reliable shutdown
+2. **Place scripts in secure location** (not Desktop/Downloads)
+3. **Monitor log files** occasionally for proper operation
+4. **Test configuration changes** before relying on them
+
+### 🔐 **Security Notes**
+
+-   **Admin password in Extended version** should be changed from default
+-   **Log files contain timestamps** but no sensitive information
+-   **Script respects user cancellation** - not malicious enforcement
+
+---
+
+## 🚨 Important Behavior Notes
+
+### ⚠️ **Automatic Shutdown Behavior**
+
+-   **PC WILL shutdown at 11 PM** on Monday-Thursday if no user interaction
+-   **Friday is completely exempt** - no dialogs, no shutdown
+-   **User can cancel anytime** by clicking "YES - Cancel Shutdown"
+-   **Clicking NO or ignoring dialogs** will result in shutdown
+
+### 🎉 **Friday Weekend Exemption**
+
+-   **Cannot be overridden** - this is intentional for work-life balance
+-   **Script exits immediately** on Friday startup
+-   **All enforcement mechanisms respect Friday** including restart evasion
+-   **Resumes automatically on Monday** when next run
+
+---
+
+## 🐛 Troubleshooting
+
+### **Common Issues**
+
+| Problem                        | Solution                                                 |
+| ------------------------------ | -------------------------------------------------------- |
+| **Script doesn't shutdown PC** | Run as administrator, check Windows 10 Pro compatibility |
+| **Dialogs don't appear**       | Check system time accuracy, verify script is running     |
+| **Friday detection issues**    | Check system date/time settings and regional format      |
+| **Admin override not working** | Verify password spelling, check Extended version         |
+
+### **Debug Steps**
+
+1. **Check log files** for detailed error information
+2. **Test with modified times** (2-3 minutes ahead) for immediate results
+3. **Run script manually** from command line to see error messages
+4. **Verify admin privileges** especially on Windows 10 Pro
+
+---
+
+## 📄 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-### 📜 Author
+---
+
+## 📜 Author
 
 **Name:** Md. Najib Islam  
 **Signature:** DeveloperNajib  
 **Profession:** Software Engineer  
-**ORCID:** [Md. Najib Islam](https://orcid.org/0009-0005-8578-7790)
-**Contact:** [Telegram](https://t.me/developernajib)  
+**ORCID:** [0009-0005-8578-7790](https://orcid.org/0009-0005-8578-7790)  
+**Contact:** [Telegram](https://t.me/developernajib)
+
+---
+
+## 💡 **Remember**
+
+> **This script will automatically shutdown your PC at 11 PM Monday-Thursday. Always save your work before the scheduled time!**
+>
+> **Fridays are automatically exempt** - enjoy your weekend! 🎉
