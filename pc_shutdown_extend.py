@@ -46,14 +46,14 @@ def run_as_admin():
     if is_admin():
         return True
     else:
-        log_message("🔐 Requesting administrator privileges for reliable shutdown")
+        log_message("?? Requesting administrator privileges for reliable shutdown")
         try:
             ctypes.windll.shell32.ShellExecuteW(
                 None, "runas", sys.executable, " ".join(sys.argv), None, 1
             )
             return False
         except:
-            log_message("❌ Failed to get administrator privileges")
+            log_message("? Failed to get administrator privileges")
             return False
 
 def log_startup_info():
@@ -80,7 +80,7 @@ def check_restart_evasion():
     """
     # First check if it's Friday - no shutdown on Friday regardless of evasion
     if is_friday():
-        log_message("🎉 Friday detected during restart evasion check - no shutdown needed")
+        log_message("?? Friday detected during restart evasion check - no shutdown needed")
         return False
     
     now = datetime.datetime.now()
@@ -89,7 +89,7 @@ def check_restart_evasion():
     
     # If it's already past shutdown time on the same day, immediate shutdown is needed
     if current_time >= shutdown_time:
-        log_message("⚠️ Detected script start after shutdown time - possible restart evasion")
+        log_message("?? Detected script start after shutdown time - possible restart evasion")
         return True
         
     return False
@@ -100,7 +100,7 @@ def show_restart_evasion_dialog():
     
     # Double-check it's not Friday
     if is_friday():
-        log_message("🎉 Restart evasion detected but it's Friday - no shutdown")
+        log_message("?? Restart evasion detected but it's Friday - no shutdown")
         return False
     
     root = tk.Tk()
@@ -114,12 +114,12 @@ def show_restart_evasion_dialog():
         root.quit()
     
     def on_timeout():
-        log_message("⏰ Evasion dialog timeout - no user response. Proceeding with immediate shutdown.")
+        log_message("? Evasion dialog timeout - no user response. Proceeding with immediate shutdown.")
         root.quit()
     
     # Create custom dialog with timeout
     dialog_frame = tk.Toplevel(root)
-    dialog_frame.title("⚠️ Emergency Shutdown Warning")
+    dialog_frame.title("?? Emergency Shutdown Warning")
     dialog_frame.geometry("450x200")
     dialog_frame.protocol("WM_DELETE_WINDOW", lambda: on_response(False))  # Handle window close
     
@@ -127,7 +127,7 @@ def show_restart_evasion_dialog():
     dialog_frame.attributes('-topmost', True)
     
     # Message
-    tk.Label(dialog_frame, text="🚨 System Policy Violation Detected! 🚨", pady=10, font=("Arial", 12, "bold"), fg="red").pack()
+    tk.Label(dialog_frame, text="?? System Policy Violation Detected! ??", pady=10, font=("Arial", 12, "bold"), fg="red").pack()
     tk.Label(dialog_frame, text="Your PC should have been shut down at 11:00 PM.", pady=5).pack()
     tk.Label(dialog_frame, text="Possible restart evasion detected.", pady=5, font=("Arial", 10), fg="orange").pack()
     tk.Label(dialog_frame, text="The system will shut down in 2 minutes unless overridden.", pady=5).pack()
@@ -156,7 +156,7 @@ def show_restart_evasion_dialog():
     
     # Process result
     if timeout_response[0]:
-        log_message("🔐 Admin override requested after restart evasion detection.")
+        log_message("?? Admin override requested after restart evasion detection.")
         
         # Ask for admin password (this is just a deterrent, not real security)
         admin_root = tk.Tk()
@@ -168,16 +168,16 @@ def show_restart_evasion_dialog():
         
         # Simple check - in a real app, you'd use proper authentication
         if admin_check == "admin123":  # Replace with a better method in production
-            log_message("✅ Admin override accepted - shutdown canceled.")
+            log_message("? Admin override accepted - shutdown canceled.")
             shutdown_canceled = True
             messagebox.showinfo("Override Accepted", "Shutdown has been overridden by administrator.")
             return False  # Don't shut down
         else:
-            log_message("❌ Invalid admin override attempt.")
+            log_message("? Invalid admin override attempt.")
             messagebox.showinfo("Access Denied", "Invalid credentials. Shutdown will proceed.")
             return True  # Shut down
     else:
-        log_message("🔴 Immediate shutdown will proceed after restart evasion detection.")
+        log_message("?? Immediate shutdown will proceed after restart evasion detection.")
         return True  # Shut down
 
 def show_first_dialog():
@@ -187,7 +187,7 @@ def show_first_dialog():
     if first_dialog_shown or shutdown_canceled:
         return
     
-    log_message("📢 Displaying first shutdown warning dialog")
+    log_message("?? Displaying first shutdown warning dialog")
     
     root = tk.Tk()
     root.withdraw()
@@ -203,20 +203,20 @@ def show_first_dialog():
     
     if response:  # User clicked YES to cancel shutdown
         shutdown_canceled = True
-        log_message("✅ SHUTDOWN CANCELED by user at first dialog (clicked YES)")
+        log_message("? SHUTDOWN CANCELED by user at first dialog (clicked YES)")
         root.destroy()
         
         # Show confirmation that shutdown was canceled
         confirm_root = tk.Tk()
         confirm_root.withdraw()
         messagebox.showinfo("Shutdown Canceled", 
-                          "✅ The scheduled shutdown has been canceled!\n\nYour PC will NOT shut down at 11:00 PM today.")
+                          "? The scheduled shutdown has been canceled!\n\nYour PC will NOT shut down at 11:00 PM today.")
         confirm_root.destroy()
         
-        log_message("🛑 Script terminating - shutdown canceled by user")
+        log_message("?? Script terminating - shutdown canceled by user")
         os._exit(0)  # Force exit the script
     else:
-        log_message("⏭️ User clicked NO - will proceed with scheduled shutdown")
+        log_message("?? User clicked NO - will proceed with scheduled shutdown")
     
     first_dialog_shown = True
     root.destroy()
@@ -228,7 +228,7 @@ def show_second_dialog():
     if second_dialog_shown or shutdown_canceled:
         return
     
-    log_message("📢 Displaying final shutdown warning dialog (10 minutes remaining)")
+    log_message("?? Displaying final shutdown warning dialog (10 minutes remaining)")
     
     root = tk.Tk()
     root.withdraw()
@@ -241,12 +241,12 @@ def show_second_dialog():
         root.quit()
     
     def on_timeout():
-        log_message("⏰ Final dialog timeout - no user response. Proceeding with shutdown.")
+        log_message("? Final dialog timeout - no user response. Proceeding with shutdown.")
         root.quit()
     
     # Create custom dialog with timeout
     dialog_frame = tk.Toplevel(root)
-    dialog_frame.title("🚨 FINAL SHUTDOWN WARNING")
+    dialog_frame.title("?? FINAL SHUTDOWN WARNING")
     dialog_frame.geometry("450x220")
     dialog_frame.protocol("WM_DELETE_WINDOW", lambda: on_response(False))  # Handle window close
     
@@ -254,7 +254,7 @@ def show_second_dialog():
     dialog_frame.attributes('-topmost', True)
     
     # Message
-    tk.Label(dialog_frame, text="🚨 FINAL WARNING 🚨", font=("Arial", 16, "bold"), fg="red").pack(pady=10)
+    tk.Label(dialog_frame, text="?? FINAL WARNING ??", font=("Arial", 16, "bold"), fg="red").pack(pady=10)
     tk.Label(dialog_frame, text="Your PC will shut down in 10 minutes!", font=("Arial", 12, "bold")).pack(pady=5)
     tk.Label(dialog_frame, text="(at exactly 11:00 PM)", font=("Arial", 10)).pack(pady=5)
     tk.Label(dialog_frame, text="Click 'YES' to CANCEL the shutdown.", font=("Arial", 11, "bold"), fg="green").pack(pady=8)
@@ -285,20 +285,20 @@ def show_second_dialog():
     # Process result
     if timeout_response[0]:  # User clicked YES to cancel
         shutdown_canceled = True
-        log_message("✅ SHUTDOWN CANCELED by user at final dialog (clicked YES)")
+        log_message("? SHUTDOWN CANCELED by user at final dialog (clicked YES)")
         
         # Show confirmation that shutdown was canceled
         root.destroy()
         cancel_root = tk.Tk()
         cancel_root.withdraw()
         messagebox.showinfo("Shutdown Canceled", 
-                          "✅ The scheduled shutdown has been canceled!\n\nYour PC will NOT shut down at 11:00 PM today.")
+                          "? The scheduled shutdown has been canceled!\n\nYour PC will NOT shut down at 11:00 PM today.")
         cancel_root.destroy()
         
-        log_message("🛑 Script terminating - shutdown canceled by user")
+        log_message("?? Script terminating - shutdown canceled by user")
         os._exit(0)  # Force exit the script
     else:
-        log_message("⏭️ User clicked NO or timeout - will proceed with scheduled shutdown")
+        log_message("?? User clicked NO or timeout - will proceed with scheduled shutdown")
     
     second_dialog_shown = True
     root.destroy()
@@ -309,14 +309,14 @@ def execute_shutdown(delay_minutes=1):
     
     # Final check if shutdown was canceled or if it's Friday
     if shutdown_canceled:
-        log_message("⚠️ Shutdown was canceled, not executing shutdown command")
+        log_message("?? Shutdown was canceled, not executing shutdown command")
         return
     
     if is_friday():
-        log_message("🎉 Friday detected during shutdown execution - aborting shutdown")
+        log_message("?? Friday detected during shutdown execution - aborting shutdown")
         return
     
-    log_message(f"🔴 INITIATING SYSTEM SHUTDOWN with {delay_minutes} minute delay...")
+    log_message(f"?? INITIATING SYSTEM SHUTDOWN with {delay_minutes} minute delay...")
     
     try:
         if os.name == 'nt':  # Windows
@@ -330,22 +330,22 @@ def execute_shutdown(delay_minutes=1):
             ], capture_output=True, text=True, timeout=10)
             
             if result.returncode == 0:
-                log_message("✅ Primary shutdown command executed successfully.")
+                log_message("? Primary shutdown command executed successfully.")
             else:
-                log_message(f"⚠️ Primary shutdown failed, trying alternative: {result.stderr}")
+                log_message(f"?? Primary shutdown failed, trying alternative: {result.stderr}")
                 # Method 2: Fallback
                 os.system(f"shutdown /s /t {delay_seconds} /f")
                 
     except Exception as e:
-        log_message(f"❌ Error during shutdown: {e}")
+        log_message(f"? Error during shutdown: {e}")
         try:
             # Last resort method
             os.system('wmic os where "Primary=\'True\'" call shutdown')
-            log_message("🔄 Emergency shutdown method executed")
+            log_message("?? Emergency shutdown method executed")
         except Exception as e2:
-            log_message(f"💥 All shutdown methods failed: {e2}")
+            log_message(f"?? All shutdown methods failed: {e2}")
     
-    log_message("⚡ Shutdown command execution completed.")
+    log_message("? Shutdown command execution completed.")
     # Exit the script after initiating shutdown
     os._exit(0)
 
@@ -355,13 +355,13 @@ def schedule_checker():
     
     # Check if today is Friday - if so, skip shutdown entirely
     if is_friday():
-        log_message("🎉 Today is Friday - NO SHUTDOWN scheduled! Enjoy your weekend!")
-        log_message("📅 Shutdown scheduler will resume on Monday")
+        log_message("?? Today is Friday - NO SHUTDOWN scheduled! Enjoy your weekend!")
+        log_message("?? Shutdown scheduler will resume on Monday")
         return  # Exit the function, no shutdown on Friday
     
-    log_message("✅ Shutdown scheduler started and running in background")
-    log_message(f"📅 Today is {datetime.datetime.now().strftime('%A')} - shutdown is scheduled")
-    log_message(f"🕘 Schedule: First warning at {first_dialog_time.strftime('%I:%M %p')}, "
+    log_message("? Shutdown scheduler started and running in background")
+    log_message(f"?? Today is {datetime.datetime.now().strftime('%A')} - shutdown is scheduled")
+    log_message(f"?? Schedule: First warning at {first_dialog_time.strftime('%I:%M %p')}, "
               f"Final warning at {second_dialog_time.strftime('%I:%M %p')}, "
               f"Shutdown at {shutdown_time.strftime('%I:%M %p')}")
     
@@ -379,13 +379,13 @@ def schedule_checker():
         
         # Double-check it's not Friday (in case day changed during execution)
         if is_friday():
-            log_message("🎉 Day changed to Friday - canceling shutdown")
+            log_message("?? Day changed to Friday - canceling shutdown")
             shutdown_canceled = True
             break
         
         # If we're already past shutdown time with no first dialog shown, handle special case
         if now >= shutdown_time and not first_dialog_shown:
-            log_message("⚠️ Current time is already past shutdown time with no prior dialogs shown.")
+            log_message("?? Current time is already past shutdown time with no prior dialogs shown.")
             # In this case, we assume it's a restart evasion if we didn't already check
             if not immediate_shutdown:
                 immediate_shutdown = show_restart_evasion_dialog()
@@ -400,18 +400,18 @@ def schedule_checker():
         
         # Check if it's time to show first dialog (9:30 PM - 11:00 PM)
         if first_dialog_time <= now < shutdown_time and not first_dialog_shown and not shutdown_canceled:
-            log_message("🔔 Showing first confirmation dialog...")
+            log_message("?? Showing first confirmation dialog...")
             show_first_dialog()
         
         # Check if it's time to show second dialog (10:50 PM)
         if (second_dialog_time <= now < shutdown_time and 
             not second_dialog_shown and first_dialog_shown and not shutdown_canceled):
-            log_message("⚠️ Showing second (final) confirmation dialog...")
+            log_message("?? Showing second (final) confirmation dialog...")
             show_second_dialog()
         
         # Check if it's shutdown time
         if now >= shutdown_time and first_dialog_shown and not shutdown_canceled:
-            log_message("⏰ Shutdown time reached - executing shutdown")
+            log_message("? Shutdown time reached - executing shutdown")
             execute_shutdown()
             break
         
@@ -427,7 +427,7 @@ def hide_console_window():
             hwnd = win32gui.GetConsoleWindow()
             if hwnd:
                 win32gui.ShowWindow(hwnd, win32con.SW_HIDE)
-                log_message("🫥 Console window hidden")
+                log_message("?? Console window hidden")
         except:
             # Alternative method if win32gui is not available
             pass
@@ -456,9 +456,9 @@ if __name__ == "__main__":
     try:
         # First check if it's Friday - exit early if so
         if is_friday():
-            log_message("🎉 TODAY IS FRIDAY - Shutdown scheduler disabled for the weekend!")
-            log_message("📅 The scheduler will resume automatically on Monday")
-            print("🎉 It's Friday! No shutdown scheduled today. Enjoy your weekend!")
+            log_message("?? TODAY IS FRIDAY - Shutdown scheduler disabled for the weekend!")
+            log_message("?? The scheduler will resume automatically on Monday")
+            print("?? It's Friday! No shutdown scheduled today. Enjoy your weekend!")
             sys.exit(0)
         
         # Check if the script should run in background mode
@@ -466,9 +466,9 @@ if __name__ == "__main__":
             # Check for administrator privileges on Windows
             if os.name == 'nt':
                 if not is_admin():
-                    log_message("🔐 Script needs administrator privileges for reliable shutdown")
+                    log_message("?? Script needs administrator privileges for reliable shutdown")
                     if not run_as_admin():
-                        log_message("❌ Failed to get administrator privileges, continuing anyway")
+                        log_message("? Failed to get administrator privileges, continuing anyway")
                     else:
                         sys.exit(0)  # Exit this instance, the elevated one will run
             
@@ -482,19 +482,19 @@ if __name__ == "__main__":
             # Run scheduler in hidden mode
             # Log startup information
             log_startup_info()
-            log_message("🚀 Enhanced Shutdown Scheduler started with restart evasion detection")
-            log_message(f"👑 Running with admin privileges: {is_admin()}")
-            log_message(f"📅 Today is {datetime.datetime.now().strftime('%A, %B %d, %Y')}")
+            log_message("?? Enhanced Shutdown Scheduler started with restart evasion detection")
+            log_message(f"?? Running with admin privileges: {is_admin()}")
+            log_message(f"?? Today is {datetime.datetime.now().strftime('%A, %B %d, %Y')}")
             
             # Run the scheduler
             schedule_checker()
             
     except KeyboardInterrupt:
-        log_message("🛑 Shutdown scheduler stopped by user")
+        log_message("?? Shutdown scheduler stopped by user")
     except Exception as e:
-    log_message(f"💥 Critical error in shutdown scheduler: {e}")
-    try:
-        with open(os.path.join(SCRIPT_DIR, "shutdown_error.log"), "a") as f:
-            f.write(f"{datetime.datetime.now()}: Critical error: {str(e)}\n")
-    except:
-        pass
+        log_message(f"?? Critical error in shutdown scheduler: {e}")
+        try:
+            with open(os.path.join(SCRIPT_DIR, "shutdown_error.log"), "a") as f:
+                f.write(f"{datetime.datetime.now()}: Critical error: {str(e)}\n")
+        except:
+            pass
